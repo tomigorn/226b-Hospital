@@ -13,22 +13,44 @@ public class Hospital {
     //==============================================
     //Constructors
     public Hospital() {
-	System.out.println("This is a simulation of a hospital");
-	System.out.println("==================================");
-	System.out.println("\n=> Whats the name of the first hospital you're going to visit?");
+	
+	//intro
+	
+	System.out.println("---------the hospitals-----------");
+	System.out.println("This is a simulation of hospitals");
+	System.out.println("=================================");
+	
+	//first hospital name
+	
+	System.out.println("\n=> Whats the name of the hospital you're going to visit first?");
 	setName( sc.nextLine() );
 	System.out.println("-- Welcome to " + name + ".");
+	
+	//adding hospital staff
 	
 	System.out.println("\n=> now let's add some staff:");
 	addStaff();
 	
+	//adding patients to the first hospital
+	
 	System.out.println("=> After adding staffmembers let's add some patients.");
 	addPatients();
 	
+	/* action part
+	 *  
+	 * one can do the following things:
+	 * - adding/removing/altering staff members
+	 * - adding/removing/altering hospital patients
+	 * - changing the hospital's name
+	 * - visit a different hospital
+	 * - exit the simulation	*/
 	System.out.println("\nPatients have been added.\n=> What do you want to do now?\n   1) act as a staff member\n   2) act as a patient\n   3) change this hospital's name\n   4) go to a different hospital\n      99) exit the simulation");
 	action();
     }
 
+    
+    
+    //==============================================
     //==============================================
     //main
     public static void main(String[] args) {
@@ -36,13 +58,18 @@ public class Hospital {
     }
 
     //==============================================
+    //==============================================
     //Methods
+    
+    //==============================================
+    //set the name of the hospital
     public void setName(String name) {
 	this.name = name;
     }
     
 
-    
+    //==============================================
+    //add staff to the hospital
     public void addStaff(){	
 	System.out.println("=> There are Doctors, Nurses and Assistants. What's the new staffmembers position?");
 	System.out.println("             ^^^^^^^  ^^^^^^     ^^^^^^^^^^");
@@ -62,59 +89,55 @@ public class Hospital {
 	    staffPosition = sc.nextLine();
 	    staffPosition = staffPosition.toLowerCase();
 	    
+	    String currentName = "";
+	    String currentPosition = "";
+	    String currentSex = "";
+	    
 	    switch(staffPosition) {
+	    
+	    //case Doctor
+	    
 	    case "1":
 	    case "doctor":
 	    case "doc":
 	    case "d":
-		System.out.println("=> What's the doctor's name?");
-		String input = sc.nextLine();
-		//addingPossible = staffAlreadyExists("Doctor", input);//checks if a Nurse with this name already works at the hospital
+		System.out.println("=> What's this Doctor's name?");
+		currentName = sc.nextLine();
+		currentPosition = "Doctor";
+		
+		System.out.println("\n=> What's this Doctor's sex?");
+		currentSex = normalizeSexType();
+		
+		//checks if a Nurse with this name already works at the hospital
+		addingPossible = !staffAlreadyExists(currentPosition, currentName, currentSex);
 		
 		if(addingPossible) {
-		    staffWorkingHere.add( new Doctor(input) );
-		    System.out.println("-- Doctor " + input + " has been added.");
+		    staffWorkingHere.add( new Doctor(currentName) );
+		    System.out.println("-- Dr. " + currentName + " has been added.");
 		}else {
-		    System.out.println("\n-- error:\n   Doctor " + input + " already works in " + this.name + "!");
+		    System.out.println("\n-- error:\n   Dr. " + currentName + " already works in " + this.name + "!");
 		}
 		addingSuccessful = true;
 		break;
 	    
+		
+	    //case Nurse
+		
 	    case "2":
 	    case "nurse":
 	    case "n":
+		currentPosition = "Nurse";
+		
 		System.out.println("=> What's the nurse's name?");
-		input = sc.nextLine();
+		currentName = sc.nextLine();
 		
 		System.out.println("=> What's the nurse's sex?");
+		currentSex = normalizeSexType();
 		
-		String sex = sc.nextLine();
-		boolean validSexType = false;
-		do {
-		    sex = sex.toLowerCase();
-		    
-		    switch(sex) {
-		    case "male":
-		    case "männlich":
-		    case "herr":
-		    case "mann":
-		    case "mister":
-			validSexType = true;
-		    case "female":
-		    case "weiblich":
-		    case "frau":
-			validSexType = true;
-		    default:
-			System.out.println("=> invalid sex type. please reenter sex type:");
-			sex = sc.nextLine();
-			validSexType = false;
-		    }
-		}while(!validSexType);
-		
-		addingPossible = staffAlreadyExists("Nurse", input, sex);//checks if a Nurse with this name already works at the hospital
+		addingPossible = staffAlreadyExists(currentPosition, currentName, sex);//checks if a Nurse with this name already works at the hospital
 		String salutation = "";
 		if(addingPossible) {
-		    staffWorkingHere.add( new Nurse(input) );
+		    staffWorkingHere.add( new Nurse(currentName) );
 		    for(Staff staffmember: staffWorkingHere) {
 			System.out.println("Test ");
 		    }
@@ -170,16 +193,22 @@ public class Hospital {
 	}while(addingMoreStaff);
     }
     
-    private boolean staffAlreadyExists(String string, String input, String sex) {
+    
+    //==============================================
+    // checking if the staffmember already exists
+    private boolean staffAlreadyExists(String position, String name, String sex) {
 	boolean addingPossible = true;
 	for(Staff staffmember: staffWorkingHere) {
-	    if(staffmember.getPosition().equals(string) && staffmember.getName().equals(input) && staffmember.getSex().equals(sex)) {
+	    if(staffmember.getPosition().equals(position) && staffmember.getName().equals(name) && staffmember.getSex().equals(sex)) {
 		addingPossible = false;
 	    }
 	}
 	return addingPossible;
     }
     
+    
+    //==============================================
+    //what's this staffmember's salutation?
     private String staffSalutation(String position, String name, String sex) {
 	String salutation = "";
 	for(Staff staffmember: staffWorkingHere) {
@@ -190,12 +219,62 @@ public class Hospital {
 	return salutation;
     }
 
+    
+    //==============================================
+    //adding patients to the hospital
     public void addPatients() {
 	System.out.println("=> Whats the patient's name?");
 
     }
     
     
+    //==============================================
+    //filter out sex types, so that only the allowed ones are left
+    //either male or female
+    public String normalizeSexType() {
+	boolean validSexType = false;
+	String sex = "";
+	
+	do {
+	    sex = sc.nextLine();
+	    sex.toLowerCase();
+	    
+	    switch(sex) {
+	    case "male":
+	    case "man":
+	    case "boy":
+	    case "boi":
+	    case "mr":
+	    case "mister":
+	    case "sir":
+	    case "husband":
+	    case "mann":
+	    case "männlich":
+		
+		sex = "male";
+		validSexType = true;
+		
+	    case "female":
+	    case "woman":
+	    case "wife":
+	    case "girl":
+	    case "frau":
+		
+		sex = "female";
+		validSexType = true;
+		
+	    default:
+		System.out.println("-- invalid sex type\n\n=> please try again");
+	    }
+	}while(!validSexType);
+	
+	return sex;
+    }
+    
+    
+    //==============================================
+    //actions the user can perform after adding members of the hospital
+    //changing between actions
     public void action() {
 	String action = "";
 	
