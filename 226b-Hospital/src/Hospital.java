@@ -26,7 +26,7 @@ public class Hospital {
 	
 	//first hospital name
 	
-	System.out.println("\n=> Whats the name of the hospital\n   you're going to visit first?");
+	System.out.println("\n=> What's the name of the hospital\n   you're going to visit first?");
 	setName( sc.nextLine() );
 	System.out.println("-- Welcome to " + name);
 	
@@ -113,13 +113,12 @@ public class Hospital {
 	    case "doctor":
 	    case "doc":
 	    case "d":
-		System.out.println("\n=> What's this Doctor's name?");
+		System.out.println("=> What's this Doctor's name?");
 		System.out.println("                        ^^^^");
-		currentName = inputHumanName();
 		currentName = sc.nextLine();
 		currentPosition = "Doctor";
 		
-		System.out.println("\n=> What's this Doctor's sex?");
+		System.out.println("=> What's this Doctor's sex?");
 		System.out.println("                        ^^^");
 		currentSex = normalizeSexType();
 		shortCurrentSex = currentSex.charAt(0);
@@ -129,10 +128,11 @@ public class Hospital {
 		
 		if(addingPossible) {
 		    staffWorkingHere.add( new Doctor(currentName, currentSex) );
-		    System.out.println("-- (" + shortCurrentSex + ") Dr. " + currentName + " has been added.");
+		    System.out.println("-- Dr. " + currentName + " (" + shortCurrentSex + ") now works at " + this.name + ".");
 		}else {
-		    System.out.println("-- error:\n   (" + shortCurrentSex + ") Dr. " + currentName + " already works in " + this.name + "!");
+		    System.out.println("-- error:\n   Dr. " + currentName + " (" + shortCurrentSex + ") already works at " + this.name + "!");
 		}
+		System.out.println("--------------------------------------------");
 		addingSuccessful = true;
 		break;
 	    
@@ -142,27 +142,32 @@ public class Hospital {
 	    case "2":
 	    case "nurse":
 	    case "n":
-		currentPosition = "Nurse";
-		
-		System.out.println("=> What's the nurse's name?");
+		System.out.println("=> What's this nurse's name?");
+		System.out.println("                       ^^^^");
 		currentName = sc.nextLine();
+		currentPosition = "Nurse";
+		currentSalutation = "Mr.";
 		
-		System.out.println("=> What's the nurse's sex?");
+		System.out.println("=> What's this nurse's sex?");
+		System.out.println("                       ^^^");
 		currentSex = normalizeSexType();
+		shortCurrentSex = currentSex.charAt(0);
 		
-		//checks if a Nurse with this name already works at the hospital
+		//checks if a nurse with this name and sex already works at the hospital
 		addingPossible = staffDoesntExistYet(currentPosition, currentName, currentSex);
 		
-		//create a new object if possible
 		if(addingPossible) {
 		    staffWorkingHere.add( new Nurse(currentName, currentSex) );
-		    System.out.println("-- " + currentSalutation + " " + currentName + " has been added to the staff of " + this.name + ".");
+		    System.out.println("-- " + currentSalutation + " " + currentName + " is a new nurse at " + this.name + ".");
 		}else {
-		    System.out.println("\n-- error:\n   " + currentSalutation + " " + currentName + " already works here as a nurse!");
+		    System.out.println("-- error:\n   " + currentSalutation + " " + currentName + " already is a nurse at " + this.name + "!");
 		}
-	    	addingSuccessful = true;
-	    	break;
+		System.out.println("--------------------------------------------");
+		addingSuccessful = true;
+		break;
 	    
+		
+	    //case assistant
 	    
 	    case "3":
 	    case "assistent":
@@ -184,7 +189,7 @@ public class Hospital {
 	    }
 	
 	    if(addingSuccessful) {
-        	    System.out.println("\n=> Should we add somebody else? (y/n)" );
+        	    System.out.println("=> Should we add somebody else? (y/n)" );
         	    String moreToAdd = sc.nextLine();
         	    moreToAdd = moreToAdd.toLowerCase();
         	
@@ -239,31 +244,9 @@ public class Hospital {
     //==============================================
     //adding patients to the hospital
     public void addPatients() {
-	System.out.println("=> Whats the patient's name?");
+	System.out.println("=> What's the patient's name?");
 
     }
-    
-    //==============================================
-    //only allows for human names
-    //numbers, symbols etc are beeing rejected
-    public String inputHumanName() {
-	String name = "";
-	String userinput = sc.nextLine();
-	
-	while(true) {
-	    //if userinput has only alphabet chars including umlauts etc
-	    if(userinput.matches("[a-zA-Z]") ){
-		name = userinput;
-		break;
-	    }else {
-		System.out.println("not alphabet chars");
-		userinput = sc.nextLine();
-	    }
-	}
-	
-	return name;
-    }
-    
     
     
     //==============================================
