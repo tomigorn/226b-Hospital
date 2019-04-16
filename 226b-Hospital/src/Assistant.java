@@ -8,17 +8,23 @@ public final class Assistant extends Staff{
     private ArrayList<Patient> treatedPatients = new ArrayList<Patient>();
 
     //==============================================
-    //Constructors   
-    public Assistant(String name) {
-	super(name);
-	setPosition("Assistant");
-    }
+    //Constructors
     public Assistant() {
 	System.out.println("What's the assistant's name?");
 	setName(new Scanner(System.in).nextLine());
 	System.out.println(getName() + " has been added as a new assistant.");
     }
     
+    
+    public Assistant(String name) {
+	super(name);
+	setPosition("Assistant");
+    }
+    
+    public Assistant(String name, String sex) {
+	super(name, sex);
+	setPosition("Assistant");
+    }
     //==============================================
     //Methods
     @Override
