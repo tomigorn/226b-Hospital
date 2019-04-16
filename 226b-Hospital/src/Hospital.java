@@ -67,35 +67,49 @@ public class Hospital {
 	    case "d":
 		System.out.println("What's the doctor's name?");
 		String input = sc.nextLine();
-		for(Staff staffmember: staffWorkingHere) {
-		    if(staffmember.getPosition().equals("Doctor") && staffmember.getName().equals(input)) {
-			addingPossible = false;
-		    }
-		}
+		addingPossible = staffAlreadyExists("Doctor", input);//checks if a Nurse with this name already works at the hospital
+		
 		if(addingPossible) {
 		    staffWorkingHere.add( new Doctor(input) );
 		}else {
 		    System.out.println("This Doctor already works here!");
 		}
 		addingSuccessful = true;
-	    break;
-	    /*
+		break;
+	    
 	    case "2":
 	    case "nurse":
 	    case "n":
-	    	staffWorkingHere.add( new Nurse() );
+		System.out.println("What's the nurse's name?");
+		input = "";
+		input = sc.nextLine();
+		addingPossible = staffAlreadyExists("Nurse", input);//checks if a Nurse with this name already works at the hospital
+		
+		if(addingPossible) {
+		    staffWorkingHere.add( new Nurse(input) );
+		}else {
+		    System.out.println("This Doctor already works here!");
+		}
 	    	addingSuccessful = true;
-	    break;
-	    */
+	    	break;
 	    
-	    /*
+	    
 	    case "3":
 	    case "assistent":
 	    case "a":
-	    	staffWorkingHere.add( new Nurse() );
+		System.out.println("What's the assistant's name?");
+		input = "";
+		input = sc.nextLine();
+	    	addingPossible = staffAlreadyExists("Assistant", input);//checks if a Nurse with this name already works at the hospital
+		
+		if(addingPossible) {
+		    staffWorkingHere.add( new Assistant(input) );
+		}else {
+		    System.out.println("This Doctor already works here!");
+		}
 	    	addingSuccessful = true;
-	    break;
-	    */
+	    	break;
+	    
 	    default:
 		System.out.println("Whoops. That's not the expected input. Please try again.");
 	    }
@@ -124,6 +138,16 @@ public class Hospital {
 	}
     }
     
+    private boolean staffAlreadyExists(String string, String input) {
+	boolean addingPossible = true;
+	for(Staff staffmember: staffWorkingHere) {
+	    if(staffmember.getPosition().equals("Nurse") && staffmember.getName().equals(input)) {
+		addingPossible = false;
+	    }
+	}
+	return addingPossible;
+    }
+
     public void addPatients() {
 	System.out.println("Whats the patient's name?");
 
