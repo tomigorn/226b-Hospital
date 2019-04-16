@@ -4,9 +4,9 @@ import java.util.Scanner;
 
 public final class Doctor extends Staff{
     //==============================================
-    //Variables   
+    //Variables
     private ArrayList<Patient> patientsBeingTreated = new ArrayList<Patient>();
-    private ArrayList<Patient> treatedPatients = new ArrayList<Patient>();
+    private ArrayList<Patient> successfullyTreatedPatients = new ArrayList<Patient>();
 
     //==============================================
     //Constructors   
@@ -36,6 +36,7 @@ public final class Doctor extends Staff{
     public void healPatient(Patient patient) {
 	//patient.
 	System.out.println("Patient " + patient.getName() + " was here for the following reason:\n" + patient.getSickness() + "\nI've successfully healed this patient.");
-	
+	patientsBeingTreated.remove(patient);
+	successfullyTreatedPatients.add(patient);
     }
 }

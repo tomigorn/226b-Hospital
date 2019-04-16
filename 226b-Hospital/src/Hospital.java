@@ -23,7 +23,7 @@ public class Hospital {
 	System.out.println("After adding staffmembers let's add some patients.");
 	addPatients();
 	
-	System.out.println("\nWhat do you want to do now?\n   1) add a staff member\n   2) add a patient\n   3) change the hospital's name\n   4) act as a Doctor\n   5) act as a patient");
+	System.out.println("\nWhat do you want to do now?\n   1) act as a staff member\n   2) act as a patient\n   3) change this hospital's name\n   4) go to a different hospital");
 	action();
     }
 
@@ -41,26 +41,25 @@ public class Hospital {
     
 
     
-    public void addStaff(){
+    public void addStaff(){	
 	System.out.println("There are Doctors, Nurses and Assistants. What's the new staffmembers position?");
 	
 	boolean addingMoreStaff = true;
 	boolean addingSuccessful = false;
 	boolean addingPossible = true;
 	
-	while(addingMoreStaff) {
+	do{
 	    if(addingSuccessful) {
 		System.out.println("Who are you going to add now?   (Doctor/ Nurse/ Assistent)");
 	    }
 	    addingSuccessful = false;
 	    addingPossible = true;
 	    
-	    String position = "";
-	    position = sc.nextLine();
+	    String staffPosition = "";
+	    staffPosition = sc.nextLine();
+	    staffPosition = staffPosition.toLowerCase();
 	    
-	    position = position.toLowerCase();
-	    
-	    switch(position) {
+	    switch(staffPosition) {
 	    case "1":
 	    case "doctor":
 	    case "doc":
@@ -72,7 +71,7 @@ public class Hospital {
 		if(addingPossible) {
 		    staffWorkingHere.add( new Doctor(input) );
 		}else {
-		    System.out.println("This Doctor already works here!");
+		    System.out.println("\nerror:\n   This Doctor already works here!");
 		}
 		addingSuccessful = true;
 		break;
@@ -81,14 +80,13 @@ public class Hospital {
 	    case "nurse":
 	    case "n":
 		System.out.println("What's the nurse's name?");
-		input = "";
 		input = sc.nextLine();
 		addingPossible = staffAlreadyExists("Nurse", input);//checks if a Nurse with this name already works at the hospital
 		
 		if(addingPossible) {
 		    staffWorkingHere.add( new Nurse(input) );
 		}else {
-		    System.out.println("This Doctor already works here!");
+		    System.out.println("\nerror:\n   This nurse already works here!");
 		}
 	    	addingSuccessful = true;
 	    	break;
@@ -105,7 +103,7 @@ public class Hospital {
 		if(addingPossible) {
 		    staffWorkingHere.add( new Assistant(input) );
 		}else {
-		    System.out.println("This Doctor already works here!");
+		    System.out.println("\nerror:\n   This assistant already works here!");
 		}
 	    	addingSuccessful = true;
 	    	break;
@@ -135,13 +133,13 @@ public class Hospital {
         		System.out.println("yes or no?");
         	    }
 	    }
-	}
+	}while(addingMoreStaff);
     }
     
     private boolean staffAlreadyExists(String string, String input) {
 	boolean addingPossible = true;
 	for(Staff staffmember: staffWorkingHere) {
-	    if(staffmember.getPosition().equals("Nurse") && staffmember.getName().equals(input)) {
+	    if(staffmember.getPosition().equals(string) && staffmember.getName().equals(input)) {
 		addingPossible = false;
 	    }
 	}
