@@ -10,13 +10,18 @@ public abstract class Staff extends Human{
 
     //==============================================
     //Constructors
+    public Staff() {
+    }
+    
+    
     public Staff(String name) {
 	super(name);
     }
     
-    public Staff() {
-    }
     
+    public Staff(String name, String sex) {
+	super(name, sex);
+    }
     //==============================================
     //Methods
     //==============================================

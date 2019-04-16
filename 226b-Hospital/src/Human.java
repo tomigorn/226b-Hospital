@@ -7,13 +7,20 @@ public abstract class Human {
     private String salutation = "";
     
     //==============================================
-    //Constructors   
+    //Constructors
+    public Human() {
+    }
+    
+    
     public Human(String name) {
 	this.name = name;
     }
-    public Human() {
-    }
+    
 
+    public Human(String name, String sex) {
+	this.name = name;
+	setSex(sex);
+    }
     //==============================================
     //Methods
     public String getName() {
@@ -45,21 +52,17 @@ public abstract class Human {
         return sex;
     }
 
+    
+    //set sex and salutation at the same time, because they are tied together
     public final boolean setSex(String sex) {
 	sex = sex.toLowerCase();
 	
         switch(sex) {
         case "male":
-        case "männlich":
-        case "herr":
-        case "mann":
-        case "mister":
             this.sex = "male";
             this.salutation = "Mr.";
             return true;
         case "female":
-        case "weiblich":
-        case "frau":
             this.sex = "female";
             this.salutation = "Ms.";
             return true;
@@ -69,6 +72,7 @@ public abstract class Human {
         return false;
     }
     
+    /*
     public final boolean compareSex(String sex) {
 	sex = sex.toLowerCase();
 	
@@ -92,4 +96,5 @@ public abstract class Human {
         }
         return false;
     }
+    */
 }

@@ -8,17 +8,24 @@ public final class Nurse extends Staff{
     private ArrayList<Patient> treatedPatients = new ArrayList<Patient>();
 
     //==============================================
-    //Constructors   
-    public Nurse(String name) {
-	super(name);
-	setPosition("Nurse");
-    }
+    //Constructors
     public Nurse() {
 	System.out.println("What's this nurse's name?");
 	setName(new Scanner(System.in).nextLine());
 	System.out.println(getName() + " has been added as a new nurse.");
     }
     
+    
+    public Nurse(String name) {
+	super(name);
+	setPosition("Nurse");
+    }
+    
+    
+    public Nurse(String name, String sex) {
+	super(name, sex);
+	setPosition("Nurse");
+    }
     //==============================================
     //Methods
     @Override

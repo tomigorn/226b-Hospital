@@ -9,17 +9,24 @@ public final class Doctor extends Staff{
     private ArrayList<Patient> successfullyTreatedPatients = new ArrayList<Patient>();
 
     //==============================================
-    //Constructors   
-    public Doctor(String name) {
-	super(name);
-	setPosition("Doctor");
-    }
+    //Constructors
     public Doctor() {
 	System.out.println("What's the doctor's name?");
 	setName(new Scanner(System.in).nextLine());
 	System.out.println(getName() + " has been added as a new Doctor.");
     }
     
+    
+    public Doctor(String name) {
+	super(name);
+	setPosition("Doctor");
+    }
+    
+    
+    public Doctor(String name, String sex) {
+	super(name, sex);
+	setPosition("Doctor");
+    }
     //==============================================
     //Methods
     @Override
