@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 
-public final class Doctor extends Staff{
+public class Doctor extends Staff{
     //==============================================
     //Variables
     private ArrayList<Patient> patientsBeingTreated = new ArrayList<Patient>();

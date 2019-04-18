@@ -6,21 +6,31 @@ public final class Patient extends Human{
     private String sickness = "";
     private ArrayList<Staff> staffTreatingThisPatient = new ArrayList<Staff>();
 
-    public Patient(String name) {
-	setName(name);
-	
-	System.out.println("Hi " + super.getName() + "\nTell us, what's wrong? Are you sick?\n");
-    }
     
+    //==============================================
+    //Constructors
     public Patient() {
 	
     }
+    
+    
+    public Patient(String name) {
+	super(name);
+	
+	System.out.println("Hi " + super.getName() + "\nTell us, what's wrong? Are you sick?\n");
+    }
+
+
+    public Patient(String currentName, String currentSex) {
+	super(currentName, currentSex);
+    }
+
 
     //==============================================
     //Methods
     @Override
     public void tellStatus() {
-	if(!sickness.equals("")) {
+	if(!sickness.isEmpty()) {
 	    System.out.println("I'm here for the following reason: " + sickness);
 	} else {
 	    System.out.println("I was successfully healed and I'm on my way out.");
@@ -28,9 +38,8 @@ public final class Patient extends Human{
     }
     
 
-    public void assignStaff(Staff staff) {
-	System.out.println("I'm now being looked after by " + staff.getName());
-	staffTreatingThisPatient.add(staff);
+    public void assignStaff(String staff) {
+	System.out.println("  -- " + this.getName() + " is now beeing looked after\n     by Dr." + staff);
     }
 
     public void getWorse() {

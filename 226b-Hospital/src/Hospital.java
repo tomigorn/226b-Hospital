@@ -5,20 +5,25 @@ import java.util.Scanner;
 public class Hospital {
     Scanner sc = new Scanner(System.in);
     
-    //==============================================
-    //Variables
+    
+//==============================================
+//==============================================
+//Variables
     public String name = "";
     private ArrayList<Staff> staffWorkingHere = new ArrayList<Staff>();
+    private ArrayList<Patient> thisHospitalsPatients = new ArrayList<Patient>();
+
     
-    //==============================================
-    //Constructors
+//==============================================
+//==============================================
+//Constructors
     public Hospital() {
 	
 	//intro
-	System.out.println("=============================================");
-	System.out.println("- - - - - - - -the hospitals- - - - - - - - -");
+	System.out.println("============================================");
+	System.out.println("- - - - - - - -the hospital- - - - - - - - -");
 	System.out.println("      This is a simulation of hospitals");
-	System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+	System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 	
 	//instructions
 	/*
@@ -53,27 +58,29 @@ public class Hospital {
 	 * - visit a different hospital
 	 * - exit the simulation	*/
 	System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+	System.out.println("\n  -- Thank you for playing\n     the hospital simulator!");
+	/*
 	System.out.println("  => What do you want to do now?");
 	System.out.println("     1) act as a staff member");
 	System.out.println("     2) act as a patient");
 	System.out.println("     3) change this hospital's name");
-	System.out.println("     4) go to a different hospital");
+	//System.out.println("     4) go to a different hospital");
 	System.out.println("    99) exit the simulation");
-	action();
+	action();*/
     }
-
     
     
-    //==============================================
-    //==============================================
-    //main
+//==============================================
+//==============================================
+//main
     public static void main(String[] args) {
 	new Hospital();
     }
 
-    //==============================================
-    //==============================================
-    //Methods
+    
+//==============================================
+//==============================================
+//Methods
     
     //==============================================
     //set the name of the hospital
@@ -121,6 +128,8 @@ public class Hospital {
 	    //case Doctor
 	    
 	    case "1":
+	    case "dr":
+	    case "dr.":
 	    case "doctor":
 	    case "doc":
 	    case "d":
@@ -154,6 +163,7 @@ public class Hospital {
 		
 	    case "2":
 	    case "nurse":
+	    case "nrs":
 	    case "n":
 		System.out.println("  => What's the new nurse's name?");
 		System.out.println("                            ^^^^");
@@ -185,6 +195,8 @@ public class Hospital {
 	    
 	    case "3":
 	    case "assistent":
+	    case "assi":
+	    case "asi":
 	    case "a":
 		System.out.println("  => What's the new assistant's name?");
 		System.out.println("                                ^^^^");
@@ -259,6 +271,28 @@ public class Hospital {
     
     
     //==============================================
+    // checking if the patient already exists
+    private boolean patientDoesntExistYet(String name, String sex) {
+	
+	boolean addingPossible = true;
+	
+	/*
+	thisHospitalsPatients.stream()
+	.anyMatch(patient->patient.getName().equalsIgnoreCase(name) && patient.getSex().equals(sex));
+	*/
+	
+	for(Patient patient: thisHospitalsPatients) {
+	    if(patient.getName().equalsIgnoreCase(name) && patient.getSex().equals(sex)) {
+		addingPossible = false;
+	    }
+	}
+	
+	//return true if staffmember doesn't exist yet
+	return addingPossible;
+    }
+    
+    
+    //==============================================
     //what's this staffmember's salutation?
     private String getSalutation(String position, String name, String sex) {
 	String salutation = "";
@@ -269,13 +303,30 @@ public class Hospital {
 	}
 	return salutation;
     }
-
     
+    
+    //==============================================
+    //what's this patient's salutation?
+    private String getSalutation(String name, String sex) {
+	String salutation = "";
+	for(Patient patient: thisHospitalsPatients) {
+	    if(patient.getName().equals(name) && patient.getSex().equals(sex)) {
+		salutation = patient.getSalutation();
+	    }
+	}
+	return salutation;
+    }
+
+
     //==============================================
     //adding patients to the hospital
     public void addPatients() {
 	boolean addingMorePatients = true;
+	boolean addingPossible = false;
 	boolean addingSuccessful = true;
+	Doctor currentDoctor;
+	Patient currentPatient;
+	
 	
 	do {
 	    String currentName;
@@ -289,42 +340,69 @@ public class Hospital {
 		
 	    System.out.println("  => What's the new patient's sex?");
 	    System.out.println("                              ^^^ ");
-	    System.out.print("  ");
-	    currentSex = sc.nextLine();
+	    currentSex = normalizeSexType();
+	    
+	    //checks if a nurse with this name and sex already works at this hospital
+	    addingPossible = patientDoesntExistYet(currentName, currentSex);
+	    
+	    if(addingPossible) {
+		currentPatient = new Patient(currentName, currentSex);
+		thisHospitalsPatients.add(currentPatient);
+		System.out.println("  -- " + currentName + " has been successfully\n     added as a patient to " + this.name);
 		
-	    System.out.println("  => Why does this patient have to be here?");
-	    System.out.println("     (sickness?)");
-	    System.out.print("  ");
-	    currentSickness = sc.nextLine();
+		System.out.println("\n  => Why does this patient have to be here?");
+		System.out.println("     (sickness?)");
+		System.out.print("  ");
+		currentSickness = sc.nextLine();
+		currentPatient.setSickness(currentSickness);		
+		    
+		System.out.println("  => Which Doctor is going\n     to treat " + currentName + "?");
+		System.out.print("  ");
+		while(true) {
+		    String currentDoctorName = sc.nextLine();
+		    
+		    if(staffDoesntExistYet("Doctor", currentDoctorName, "male") ) {
+			currentPatient.assignStaff(currentDoctorName);
+			break;
+		    }else if(staffDoesntExistYet("Doctor", currentDoctorName, "female")){
+			currentPatient.assignStaff(currentDoctorName);
+			break;
+		    }else {
+			currentPatient.assignStaff(currentDoctorName);
+		    }
+		}
+		
+		
+	    }
+	    
+		
+	    
 	    
 	    
 	    if(addingSuccessful) {
-        	    System.out.println("  => Should we add more patients? (y/n)" );
-        	    System.out.print("  ");
-        	    String moreToAdd = sc.nextLine();
-        	    moreToAdd = moreToAdd.toLowerCase();
+		System.out.println("--------------------------------------------");
+        	System.out.println("  => Should we add more patients? (y/n)" );
+        	System.out.print("  ");
+        	String moreToAdd = sc.nextLine();
+        	moreToAdd = moreToAdd.toLowerCase();
         	
-        	    switch(moreToAdd) {
-        	    case "1":
-        	    case "y":
-        	    case "yes":
-        	    case "ja":
-        		break;
-        	    case "0":
-        	    case "n":
-        	    case "no":
-        	    case "nein":
-        		addingMorePatients = false;
-        		break;
-        	    default:
-        		System.out.println("  => yes or no?");
-        	    }
+        	switch(moreToAdd) {
+        	case "1":
+        	case "y":
+        	case "yes":
+        	case "ja":
+        	    break;
+        	case "0":
+        	case "n":
+        	case "no":
+        	case "nein":
+        	    addingMorePatients = false;
+        	    break;
+        	default:
+        	    System.out.println("  => yes or no?");
+        	}
 	    }
 	}while(addingMorePatients);
-	
-	
-	
-	
     }
     
     
@@ -370,7 +448,7 @@ public class Hospital {
 		break;
 		
 	    default:
-		System.out.println("  -- invalid sex type\n=> please try again");
+		System.out.println("  -- invalid sex type\n  => please try again");
 	    }
 	}while(!validSexType);
 	
